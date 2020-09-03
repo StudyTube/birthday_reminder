@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    image: birthday_reminder_app
+    container_name: application
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    ports:
+      - 4000:4000
+    stdin_open: true
+    tty: true
+    command: iex -S mix phx.start
+    volumes:
+      - .:/birthday_reminder:cached
+      - static:/birthday_reminder/priv/static
+    tmpfs:
+      - /tmp
+
+  postgres:
+    image: postgres:11.1
+    container_name: postgres
+    ports:
+      - 5432
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data: {}
+  static:

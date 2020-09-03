@@ -1,0 +1,12 @@
+_build
+.git
+assets/node_modules
+assets/package-lock.json
+deps
+priv/static
+.formatter.exs
+.gitignore
+erl_crash.dump
+npm-debug.log
+Dockerfile
+README.md

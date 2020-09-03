@@ -13,7 +13,7 @@ config :birthday_reminder,
 # Configures the endpoint
 config :birthday_reminder, BirthdayReminderWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "Gaqtvd91FWli7JY1k5QAkIa9j/oMil/q17webAtrlUBTrk/wznviA7i8Nqh5jiY8",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: BirthdayReminderWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: BirthdayReminder.PubSub, adapter: Phoenix.PubSub.PG2]
 

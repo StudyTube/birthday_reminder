@@ -2,12 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :birthday_reminder, BirthdayReminder.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "birthday_reminder_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  url: System.get_env("DATABASE_URL"),
+  show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
