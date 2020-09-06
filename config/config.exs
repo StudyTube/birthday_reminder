@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :birthday_reminder,
-  ecto_repos: [BirthdayReminder.Repo]
+  ecto_repos: [BirthdayReminder.Repo],
+  bot_name: "studytube_bot"
 
 # Configures the endpoint
 config :birthday_reminder, BirthdayReminderWeb.Endpoint,
@@ -24,6 +25,10 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Configures Nadia (telegram bot api)
+config :nadia,
+  token: System.get_env("TELEGRAM_BOT_ID")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
