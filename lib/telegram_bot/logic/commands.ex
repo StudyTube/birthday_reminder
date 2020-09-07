@@ -25,12 +25,15 @@ defmodule TelegramBot.Commands do
   def match_message(%{message: %{text: "/subscribe"}} = message) do
     message
     |> current_chat
+    |> Users.subscribe
     |> Nadia.send_message("You successfully subscribed")
-    # |> Users.subscribe
   end
 
   def match_message(%{message: %{text: "/unsubscribe"}} = message) do
-
+    # message
+    # |> current_chat
+    # |> Users.unsubscribe
+    # |> Nadia.send_message("You successfully subscribed")
   end
 
   def match_message(%{message: %{text: _any_text}} = message) do
@@ -42,8 +45,15 @@ defmodule TelegramBot.Commands do
   def match_message(%{callback_query: %{data: "/subscribe"}} = message) do
     message
     |> current_chat
+    |> Users.subscribe
     |> Nadia.send_message("You successfully subscribed")
-    # |> Users.subscribe
+  end
+
+  def match_message(%{callback_query: %{data: "/unsubscribe"}} = message) do
+    # message
+    # |> current_chat
+    # |> Users.unsubscribe
+    # |> Nadia.send_message("You successfully subscribed")
   end
 
   defp current_chat(%{callback_query: %{message: %{chat: %{id: chat_id, username: username}}}}), do: _current_chat(chat_id, username)

@@ -15,7 +15,7 @@ defmodule BirthdayReminder.Users do
       [%User{}, ...]
 
   """
-  def list_movies(params) do
+  def list_users(params) do
     Repo.all(User)
   end
 
@@ -27,13 +27,13 @@ defmodule BirthdayReminder.Users do
   ## Examples
 
       iex> get_user!(123)
-      %Movie{}
+      %User{}
 
       iex> get_user!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_movie!(id), do: Repo.get!(User, id)
+  def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
   Updates a user.
@@ -51,5 +51,26 @@ defmodule BirthdayReminder.Users do
     user
     |> User.changeset(attrs)
     |> Repo.update()
+  end
+
+
+  @doc """
+  Subscribe a user.
+
+  ## Examples
+
+      iex> subscribe(char_id)
+      {:ok, %User{}}
+
+      iex> subscribe(chat_id)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def subscribe(chat_id) do
+    User
+    |> Repo.get_by(chat_id: chat_id)
+    |> update_user(%{subscribed: true})
+
+    chat_id
   end
 end
