@@ -1,6 +1,7 @@
 defmodule TelegramBot.Commands do
   def match_message(%{message: %{text: "/start"}} = message) do
-
+    match_message
+    |> current_user
   end
 
   def match_message(%{message: %{text: "/subscribe"}} = message) do
@@ -19,6 +20,6 @@ defmodule TelegramBot.Commands do
   end
 
   defp current_user(message) do
-
+    
   end
 end
