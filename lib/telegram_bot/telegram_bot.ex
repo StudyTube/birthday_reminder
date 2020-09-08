@@ -1,4 +1,4 @@
-defmodule TelegramBot.Supervisor do
+defmodule TelegramBot do
   use Supervisor
 
   def start_link(_init) do
