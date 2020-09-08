@@ -73,4 +73,24 @@ defmodule BirthdayReminder.Users do
 
     chat_id
   end
+
+  @doc """
+  Unsubscribe a user.
+
+  ## Examples
+
+      iex> unsubscribe(char_id)
+      {:ok, %User{}}
+
+      iex> unsubscribe(chat_id)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def unsubscribe(chat_id) do
+    User
+    |> Repo.get_by(chat_id: chat_id)
+    |> update_user(%{subscribed: false})
+
+    chat_id
+  end
 end
