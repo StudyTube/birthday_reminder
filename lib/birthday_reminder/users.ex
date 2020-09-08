@@ -15,7 +15,7 @@ defmodule BirthdayReminder.Users do
       [%User{}, ...]
 
   """
-  def list_users(params) do
+  def list_users do
     Repo.all(User)
   end
 
