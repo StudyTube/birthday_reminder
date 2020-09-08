@@ -6,54 +6,34 @@ defmodule TelegramBot.Commands do
     |> current_chat
     |> Nadia.send_message("*Hi there!*\nI am the Birthday Reminder Bot.\nIf you want to subscribe to further notifications choose the right option.\n",
         parse_mode: "Markdown",
-        reply_markup: %Nadia.Model.InlineKeyboardMarkup{
-          inline_keyboard: [
-            [
-              %{
-                callback_data: "/subscribe",
-                text: "🥳 Yes, I'm  🥳"
-              },
-              %{
-                callback_data: "/unsubscribe",
-                text: "😕 No, thanks  😕"
-              }
-            ]
-          ]
+        reply_markup: %Nadia.Model.ReplyKeyboardMarkup{
+          keyboard: [
+            [%{text: "Subscribe"}],
+            [%{text: "Unsubscribe"}]
+          ],
+          resize_keyboard: true,
+          one_time_keyboard: true
         })
   end
 
-  def match_message(%{message: %{text: "/subscribe"}} = message) do
+  def match_message(%{message: %{text: "Subscribe"}} = message) do
     message
     |> current_chat
     |> Users.subscribe
-    |> Nadia.send_message("You successfully subscribed")
+    |> Nadia.send_message("You successfully subscribed 🥳")
   end
 
-  def match_message(%{message: %{text: "/unsubscribe"}} = message) do
+  def match_message(%{message: %{text: "Unsubscribe"}} = message) do
     message
     |> current_chat
     |> Users.unsubscribe
-    |> Nadia.send_message("You successfully unsubscribed")
+    |> Nadia.send_message("You unsubscribed 😕")
   end
 
   def match_message(%{message: %{text: _any_text}} = message) do
     message
     |> current_chat
     |> Nadia.send_message("I don't understand you")
-  end
-
-  def match_message(%{callback_query: %{data: "/subscribe"}} = message) do
-    message
-    |> current_chat
-    |> Users.subscribe
-    |> Nadia.send_message("You successfully subscribed")
-  end
-
-  def match_message(%{callback_query: %{data: "/unsubscribe"}} = message) do
-    message
-    |> current_chat
-    |> Users.unsubscribe
-    |> Nadia.send_message("You successfully unsubscribed")
   end
 
   defp current_chat(%{callback_query: %{message: %{chat: %{id: chat_id, username: username}}}}), do: _current_chat(chat_id, username)
