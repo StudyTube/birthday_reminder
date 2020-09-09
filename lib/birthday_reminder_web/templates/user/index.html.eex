@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="row">
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Birthday</th>
+          <th scope="col">Subscibe</th>
+          <th scope="col">Wish</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <%= for user <- @users do %>
+          <tr>
+            <td><%= user.first_name %></td>
+            <td><%= user.last_name %></td>
+            <td><%= "#{user.birthday.day}/#{user.birthday.month}/#{user.birthday.year}" %></td>
+            <td><%= content_tag(:span, "", class: "dot #{if user.subscribed, do: "green", else: "red"}") %></td>
+            <td><%= user.wish_note %></td>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

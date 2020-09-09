@@ -10,5 +10,6 @@
   </head>
   <body>
     <%= render "navbar.html", conn: @conn %>
+    <%= render @view_module, @view_template, assigns %>
   </body>
 </html>

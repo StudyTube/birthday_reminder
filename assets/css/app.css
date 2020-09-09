@@ -1,3 +1,18 @@
 /* This file is for your main application css. */
 
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+.dot {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.green {
+  background-color: #32CD32;
+}
+
+.dot.red {
+  background-color: #DC143C;
+}

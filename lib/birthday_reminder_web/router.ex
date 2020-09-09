@@ -16,11 +16,6 @@ defmodule BirthdayReminderWeb.Router do
   scope "/", BirthdayReminderWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", UserController, :index
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", BirthdayReminderWeb do
-  #   pipe_through :api
-  # end
 end
