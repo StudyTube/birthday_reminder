@@ -10,6 +10,24 @@ defmodule BirthdayReminder.Users do
     Repo.all(query)
   end
 
+  def subscribed_users do
+    query = from u in User,
+      where: u.subscribed == true
+
+    Repo.all(query)
+  end
+
+  def closest_birthday_ids do
+    query = from u in User,
+      select: u.id,
+      where: fragment("extract(month from age(current_date + interval '7 days', ?)) = 0 and
+                       extract(day from age(current_date + interval '7 days', ?)) = 0",
+                       u.birthday,
+                       u.birthday)
+
+    Repo.all(query)
+  end
+
   def get_user!(id), do: Repo.get!(User, id)
 
   def update_user(%User{} = user, attrs) do
