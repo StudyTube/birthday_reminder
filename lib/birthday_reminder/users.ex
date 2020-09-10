@@ -4,7 +4,10 @@ defmodule BirthdayReminder.Users do
   alias BirthdayReminder.{Repo, User}
 
   def list_users do
-    Repo.all(User)
+    query = from u in User,
+      order_by: u.id
+
+    Repo.all(query)
   end
 
   def get_user!(id), do: Repo.get!(User, id)
