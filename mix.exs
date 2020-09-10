@@ -44,7 +44,8 @@ defmodule BirthdayReminder.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:nadia, "~> 0.7.0"},
-      {:quantum, "~> 3.0"}
+      {:quantum, "~> 3.0"},
+      {:timex, "~> 3.5"}
     ]
   end
 

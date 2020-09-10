@@ -6,9 +6,8 @@
           <th scope="col">First</th>
           <th scope="col">Last</th>
           <th scope="col">Birthday</th>
-          <th scope="col">Subscibe</th>
+          <th scope="col">Subscibed</th>
           <th scope="col">Wish</th>
-
         </tr>
       </thead>
       <tbody>
@@ -16,7 +15,7 @@
           <tr>
             <td><%= user.first_name %></td>
             <td><%= user.last_name %></td>
-            <td><%= "#{user.birthday.day}/#{user.birthday.month}/#{user.birthday.year}" %></td>
+            <td><%= Timex.format!(user.birthday, "%d %B", :strftime) %></td>
             <td><%= content_tag(:span, "", class: "dot #{if user.subscribed, do: "green", else: "red"}") %></td>
             <td><%= user.wish_note %></td>
         <% end %>
