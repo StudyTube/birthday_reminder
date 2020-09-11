@@ -10,16 +10,17 @@ defmodule BirthdayReminder.Users do
     Repo.all(query)
   end
 
-  def subscribed_users do
+  def subscribed_users(except_users) do
+    except_ids = Enum.map(except_users, &(&1).id)
+
     query = from u in User,
-      where: u.subscribed == true
+      where: u.subscribed == true and not(u.id in ^except_ids)
 
     Repo.all(query)
   end
 
-  def closest_birthday_ids do
+  def closest_birthdays do
     query = from u in User,
-      select: u.id,
       where: fragment("extract(month from age(current_date + interval '7 days', ?)) = 0 and
                        extract(day from age(current_date + interval '7 days', ?)) = 0",
                        u.birthday,

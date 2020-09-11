@@ -4,7 +4,7 @@ defmodule TelegramBot.Commands do
   def match_message(%{message: %{text: "/start"}} = message) do
     message
     |> current_chat
-    |> Nadia.send_message("*Hi there!*\nI am the Birthday Reminder Bot.\nIf you want to subscribe to further notifications choose the right option.\n",
+    |> Nadia.send_message("*Hi there!*\n\nI am the Birthday Reminder Bot.\n\nIf you want to subscribe to further notifications choose the right option.",
         parse_mode: "Markdown",
         reply_markup: %Nadia.Model.ReplyKeyboardMarkup{
           keyboard: [
