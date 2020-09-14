@@ -9,7 +9,6 @@ defmodule BirthdayReminder.Application do
     children = [
       BirthdayReminder.Repo,
       BirthdayReminderWeb.Endpoint,
-      TelegramBot,
       BirthdayReminder.Scheduler
     ]
 
