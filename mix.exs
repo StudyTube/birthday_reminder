@@ -45,7 +45,8 @@ defmodule BirthdayReminder.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:nadia, "~> 0.7.0"},
       {:quantum, "~> 3.0"},
-      {:timex, "~> 3.5"}
+      {:timex, "~> 3.5"},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 
