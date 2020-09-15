@@ -24,7 +24,8 @@ defmodule BirthdayReminder.Users do
       where: fragment("extract(month from age(current_date + interval '7 days', ?)) = 0 and
                        extract(day from age(current_date + interval '7 days', ?)) = 0",
                        u.birthday,
-                       u.birthday)
+                       u.birthday) and
+             u.subscribed == true
 
     Repo.all(query)
   end
