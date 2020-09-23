@@ -48,7 +48,7 @@ defmodule BirthdayReminder.NotifyUsers do
 
     Send #{payment_size} uah to the card
 
-    XXXX XXXX XXXX XXXX
+    5168 7554 2585 9853
     """
   end
 end

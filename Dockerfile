@@ -7,7 +7,6 @@ RUN apk update \
       alpine-sdk \
       openssl-dev \
       inotify-tools \
-      imagemagick \
     && mix local.rebar --force \
     && mix local.hex --force
 
