@@ -17,7 +17,7 @@ defmodule BirthdayReminder.User do
 
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:first_name, :last_name, :chat_id, :username, :birthday, :subscribed])
+    |> cast(attrs, [:first_name, :last_name, :chat_id, :username, :birthday, :subscribed, :wish_note])
     |> validate_required([:first_name, :last_name, :birthday, :subscribed])
   end
 end

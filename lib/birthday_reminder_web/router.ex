@@ -16,6 +16,6 @@ defmodule BirthdayReminderWeb.Router do
   scope "/", BirthdayReminderWeb do
     pipe_through :browser
 
-    get "/", UserController, :index
+    resources "/", UserController, only: [:index, :edit, :update]
   end
 end

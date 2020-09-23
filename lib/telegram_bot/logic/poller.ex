@@ -11,7 +11,7 @@ defmodule TelegramBot.Poller do
 
   use GenServer
 
-  # API
+  # Server
 
   def start_link do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)

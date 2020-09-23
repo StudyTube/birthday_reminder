@@ -9,5 +9,6 @@ birthday_reminder-*.tar
 npm-debug.log
 /assets/node_modules/
 /priv/static/
+/priv/repo/seeds.exs
 .env
 .env.*

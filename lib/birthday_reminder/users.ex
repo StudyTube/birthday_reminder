@@ -53,4 +53,8 @@ defmodule BirthdayReminder.Users do
 
     chat_id
   end
+
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
+  end
 end
