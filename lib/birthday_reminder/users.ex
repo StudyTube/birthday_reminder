@@ -5,7 +5,7 @@ defmodule BirthdayReminder.Users do
 
   def list_users do
     query = from u in User,
-      order_by: u.id
+      order_by: [asc: fragment("extract(month from birthday)"), asc: fragment("extract(day from birthday)")]
 
     Repo.all(query)
   end
