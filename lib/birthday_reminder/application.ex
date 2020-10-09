@@ -7,10 +7,11 @@ defmodule BirthdayReminder.Application do
 
   def start(_type, _args) do
     children = [
+      BirthdayReminder.Cache,
       BirthdayReminder.Repo,
+      BirthdayReminder.Scheduler,
       BirthdayReminderWeb.Endpoint,
-      TelegramBot,
-      BirthdayReminder.Scheduler
+      TelegramBot
     ]
 
     opts = [strategy: :one_for_one, name: BirthdayReminder.Supervisor]
