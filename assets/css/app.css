@@ -1,18 +1,13 @@
 /* This file is for your main application css. */
 
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import "../node_modules/nprogress/nprogress.css";
 
-.dot {
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  display: inline-block;
-}
+@import "tailwindcss/base";
 
-.dot.green {
-  background-color: #32CD32;
-}
+@import "tailwindcss/components";
 
-.dot.red {
-  background-color: #DC143C;
-}
+@import "./custom.css";
+
+@import "./live_view.css";
+
+@import "tailwindcss/utilities";

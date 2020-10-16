@@ -15,8 +15,9 @@ config :birthday_reminder,
 config :birthday_reminder, BirthdayReminderWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
-  render_errors: [view: BirthdayReminderWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: BirthdayReminder.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: BirthdayReminderWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: BirthdayReminder.PubSub,
+  live_view: [signing_salt: "lQPwGWDq"]
 
 # Configures Elixir's Logger
 config :logger, :console,
