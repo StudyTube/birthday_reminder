@@ -1,27 +1,68 @@
-<div class="container mt-5">
-  <div class="row">
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Birthday</th>
-          <th scope="col">Subscibed</th>
-          <th scope="col">Wish</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for user <- @users do %>
-          <tr>
-            <td><%= user.first_name %></td>
-            <td><%= user.last_name %></td>
-            <td><%= Timex.format!(user.birthday, "%d %B", :strftime) %></td>
-            <td><%= content_tag(:span, "", class: "dot #{if user.subscribed, do: "green", else: "red"}") %></td>
-            <td><%= user.wish_note %></td>
-            <td><%= link "Edit", to: Routes.user_path(@conn, :edit, user.id), class: "btn btn-default" %></td>
-        <% end %>
-      </tbody>
-    </table>
+<div class="flex flex-col m-6">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                Birthday
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                Wish
+              </th>
+              <th class="px-6 py-3 bg-gray-50"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <%= for user <- @users do %>
+              <tr>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img class="h-10 w-10 rounded-full" src="/images/icon-user-default.png" alt="">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm leading-5 font-medium text-gray-900">
+                        <%= "#{user.first_name} #{user.last_name}" %>
+                      </div>
+                      <div class="text-sm leading-5 text-gray-500">
+                        @<%= user.username %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                  <div class="text-sm leading-5 text-gray-900"><%= Timex.format!(user.birthday, "%d %B", :strftime) %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                  <%= if user.subscribed do %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Active
+                    </span>
+                  <% else %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      Inactive
+                    </span>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                  <%= user.wish_note %>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                  <%= link "Edit", to: Routes.user_path(@conn, :edit, user.id), class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>

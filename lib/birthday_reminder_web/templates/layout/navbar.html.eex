@@ -1,5 +1,18 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <%= link "Studytube Birthday Reminder", class: "navbar-brand", to: Routes.user_path(@conn, :index) %>
+<nav class="bg-white">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex-shrink-0">
+          <img class="block h-8 w-auto" src="https://f.hubspotusercontent30.net/hubfs/515235/raw_assets/public/Studytube-2018/assets/logo-small.svg" alt="Studytube logo">
+        </div>
+        <div class="sm:block sm:ml-6">
+          <div class="flex">
+            <a href="#" class="px-3 py-2 rounded-md text-md font-medium leading-5 text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Dashboard</a>
+            <a href="#" class="ml-4 px-3 py-2 rounded-md text-md font-medium leading-5 text-black hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Current money </a>
+            <a href="#" class="ml-4 px-3 py-2 rounded-md text-md font-medium leading-5 text-black hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
