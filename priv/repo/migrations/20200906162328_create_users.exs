@@ -11,7 +11,7 @@ defmodule BirthdayReminder.Repo.Migrations.CreateUsers do
       add :wish_note, :string
       add :subscribed, :boolean, null: false, default: false
 
-      timestamps
+      timestamps()
     end
   end
 end
