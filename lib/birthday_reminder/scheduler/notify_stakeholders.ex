@@ -54,7 +54,7 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   end
 
   defp send_notifications do
-    Enum.each(stakeholders, fn user -> Nadia.send_message(user.chat_id, text_message(user), parse_mode: "Markdown") end)
+    Enum.each(stakeholders(), fn user -> Nadia.send_message(user.chat_id, text_message(user), parse_mode: "Markdown") end)
   end
 
   defp text_message(user) do

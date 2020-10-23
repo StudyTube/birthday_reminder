@@ -7,9 +7,9 @@
         </div>
         <div class="sm:block sm:ml-6">
           <div class="flex">
-            <a href="#" class="px-3 py-2 rounded-md text-md font-medium leading-5 text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Users</a>
-            <a href="#" class="ml-4 px-3 py-2 rounded-md text-md font-medium leading-5 text-black hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Current money rounds</a>
-            <a href="#" class="ml-4 px-3 py-2 rounded-md text-md font-medium leading-5 text-black hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Dashboard</a>
+            <%= link "Users", to: Routes.user_path(@conn, :index), class: "navbar-link active" %></li>
+            <%= link "Dashboard", to: Routes.live_dashboard_path(@conn, :home), class: "navbar-link regular" %></li>
+            <a href="#" class="navbar-link regular">Current money rounds</a>
           </div>
         </div>
       </div>

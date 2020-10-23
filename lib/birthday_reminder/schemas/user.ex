@@ -11,6 +11,7 @@ defmodule BirthdayReminder.User do
     field :birthday, :date
     field :wish_note, :string
     field :subscribed, :boolean, default: false
+    field :is_admin, :boolean, default: false
 
     timestamps()
   end

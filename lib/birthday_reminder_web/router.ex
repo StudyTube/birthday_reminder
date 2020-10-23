@@ -1,5 +1,6 @@
 defmodule BirthdayReminderWeb.Router do
   use BirthdayReminderWeb, :router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,6 +9,10 @@ defmodule BirthdayReminderWeb.Router do
     plug :put_root_layout, {BirthdayReminderWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+  end
+
+  pipeline :admin do
+    plug(BirthdayReminder.AdminPlug)
   end
 
   pipeline :api do
@@ -20,12 +25,8 @@ defmodule BirthdayReminderWeb.Router do
     resources "/", UserController, only: [:index, :edit, :update]
   end
 
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
-
-    scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: BirthdayReminderWeb.Telemetry
-    end
+  scope "/" do
+    pipe_through [:browser, :admin]
+    live_dashboard "/dashboard", metrics: BirthdayReminderWeb.Telemetry
   end
 end
