@@ -1,30 +1,27 @@
 defmodule BirthdayReminder.Cache do
   use GenServer
 
-  @name :postgres_cache
-
   # Server
 
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: __MODULE__)
 
   def init(_) do
-    :ets.new(@name, [:set, :named_table, :public, read_concurrency: true, write_concurrency: true])
-    {:ok, []}
+    {:ok, %{}}
   end
 
   def handle_call({:get, key}, _, state) do
-    [{key, data}] = :ets.lookup(@name, key)
-    {:reply, data, state}
+    value = Map.get(state, key)
+    {:reply, value, state}
   end
 
-  def handle_call({:insert, data}, _ref, state) do
-    :ets.insert(@name, data)
-    {:reply, :ok, state}
+  def handle_call({:insert, {key, value}}, _ref, state) do
+    map = Map.put(state, key, value)
+    {:reply, :ok, map}
   end
 
   def handle_call({:delete, key}, _ref, state) do
-    :ets.delete(@name, key)
-    {:reply, :ok, state}
+    map = Map.delete(state, key)
+    {:reply, :ok, map}
   end
 
   # Client
