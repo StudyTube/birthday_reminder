@@ -17,7 +17,7 @@ config :birthday_reminder, BirthdayReminderWeb.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: BirthdayReminderWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: BirthdayReminder.PubSub,
-  live_view: [signing_salt: "lQPwGWDq"]
+  live_view: [signing_salt: System.get_env("LIVEVIEW_SALT")]
 
 # Configures Elixir's Logger
 config :logger, :console,
