@@ -1,5 +1,5 @@
 defmodule TelegramBot.Commands do
-  alias BirthdayReminder.{Repo, User, Users}
+  alias BirthdayReminder.{MoneyRounds, Repo, User, Users}
 
   def match_message(%{message: %{text: "/start"}} = message) do
     message
@@ -28,6 +28,13 @@ defmodule TelegramBot.Commands do
     |> current_chat
     |> Users.unsubscribe
     |> Nadia.send_message("You unsubscribed 😕")
+  end
+
+  def match_message(%{message: %{text: "code " <> identifier}} = message) do
+    message
+    |> current_chat
+    |> MoneyRounds.confirm_payment(identifier)
+    |> Nadia.send_message("Payment confirmed")
   end
 
   def match_message(%{message: %{text: _any_text}} = message) do

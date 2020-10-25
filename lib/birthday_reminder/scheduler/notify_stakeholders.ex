@@ -78,7 +78,7 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
 
     -------------------------------
 
-    Please wrote "#{identifier} - done" to the chat to confirm your payment
+    Please wrote "code #{identifier}" to the chat to confirm your payment
     """
   end
 end
