@@ -27,7 +27,7 @@ ul.examples {
 }
 
 .navbar-link {
-  @apply py-2 rounded-md text-base font-medium leading-5 transition duration-150 ease-in-out
+  @apply ml-4 py-2 rounded-md text-base font-medium leading-5 transition duration-150 ease-in-out
 }
 
 .navbar-link.active {
@@ -39,7 +39,7 @@ ul.examples {
 }
 
 .navbar-link.regular {
-  @apply ml-4 px-3 text-black
+  @apply px-3 text-black
 }
 
 .navbar-link.regular:hover {

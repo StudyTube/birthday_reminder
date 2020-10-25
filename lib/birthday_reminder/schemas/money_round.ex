@@ -6,14 +6,14 @@ defmodule BirthdayReminder.MoneyRound do
   schema "money_rounds" do
     field :name, :string
     field :expired_date, :date
-    field :user_ids, {:array, :integer}
+    field :usernames, {:array, :string}
 
     timestamps()
   end
 
   def changeset(money_round, attrs \\ %{}) do
     money_round
-    |> cast(attrs, [:name, :expired_date, :user_ids])
+    |> cast(attrs, [:name, :expired_date, :usernames])
     |> validate_required([:name, :expired_date])
   end
 end

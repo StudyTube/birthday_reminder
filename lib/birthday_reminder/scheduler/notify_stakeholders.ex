@@ -1,7 +1,7 @@
 defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   import Ecto.Query, warn: false
 
-  alias BirthdayReminder.{Cache, Users, User}
+  alias BirthdayReminder.{Cache, MoneyRounds, Users, User}
 
   @payment_limit 5000
 
@@ -20,6 +20,13 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   def clear_data do
     Cache.delete(:culprits)
     Cache.delete(:stakeholders)
+  end
+
+  def create_money_round do
+    MoneyRounds.create_money_round(%{
+      name: "#{culprits_names()}'s birthday",
+      expired_date: Timex.shift(Timex.today, days: 7)
+    })
   end
 
   defp culprits do
@@ -54,6 +61,7 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   end
 
   defp send_notifications do
+    create_money_round()
     Enum.each(stakeholders(), fn user -> Nadia.send_message(user.chat_id, text_message(user), parse_mode: "Markdown") end)
   end
 
