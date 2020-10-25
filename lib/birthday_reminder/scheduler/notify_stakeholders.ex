@@ -25,7 +25,8 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   def create_money_round do
     MoneyRounds.create_money_round(%{
       name: "#{culprits_names()}'s birthday",
-      expired_date: Timex.shift(Timex.today, days: 7)
+      expired_date: Timex.shift(Timex.today, days: 7),
+      identifier: :crypto.strong_rand_bytes(32) |> Base.encode64 |> binary_part(0, 32)
     })
   end
 
@@ -61,11 +62,11 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   end
 
   defp send_notifications do
-    create_money_round()
-    Enum.each(stakeholders(), fn user -> Nadia.send_message(user.chat_id, text_message(user), parse_mode: "Markdown") end)
+    round = create_money_round()
+    Enum.each(stakeholders(), fn user -> Nadia.send_message(user.chat_id, text_message(user, round.identifier), parse_mode: "Markdown") end)
   end
 
-  defp text_message(user) do
+  defp text_message(user, identifier) do
     """
     Hello #{user.first_name},
 
@@ -74,6 +75,10 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
     Send #{payment_size()} uah to the card
 
     5168 7554 2585 9853
+
+    -------------------------------
+
+    Please wrote "#{identifier} - done" to the chat to confirm your payment
     """
   end
 end
