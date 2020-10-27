@@ -22,13 +22,14 @@ defmodule BirthdayReminder.MoneyRounds do
   def create_money_round(attrs \\ %{}) do
     %MoneyRound{}
     |> MoneyRound.changeset(attrs)
-    |> Repo.insert!
+    |> Repo.insert
   end
 
   def update_money_round(%MoneyRound{} = money_round, attrs) do
     money_round
     |> MoneyRound.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:money_round_updated)
   end
 
   def confirm_payment(chat_id, identifier) do
@@ -37,5 +38,15 @@ defmodule BirthdayReminder.MoneyRounds do
     update_money_round(money_round, %{usernames: money_round.usernames ++ [user.username]})
 
     chat_id
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(BirthdayReminder.PubSub, "money-rounds")
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+  defp broadcast({:ok, money_round}, event) do
+    Phoenix.PubSub.broadcast(BirthdayReminder.PubSub, "money-rounds", {event, money_round})
+    {:ok, money_round}
   end
 end

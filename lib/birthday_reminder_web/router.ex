@@ -23,7 +23,7 @@ defmodule BirthdayReminderWeb.Router do
     pipe_through :browser
 
     resources "/", UserController, only: [:index, :edit, :update]
-    live "/money-round", MoneyRound
+    live "/money-rounds", MoneyRoundLive.Index, :index
   end
 
   scope "/" do

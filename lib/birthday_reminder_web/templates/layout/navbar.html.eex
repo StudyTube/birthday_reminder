@@ -8,7 +8,7 @@
         <div class="sm:block sm:ml-6">
           <div class="flex">
             <%= link "Users", to: Routes.user_path(@conn, :index), class: "navbar-link #{active_class(@conn, Routes.user_path(@conn, :index))}" %></li>
-            <%= live_redirect "Money rounds", to: Routes.live_path(@conn, BirthdayReminderWeb.MoneyRound), class: "navbar-link #{active_class(@conn, Routes.live_path(@conn, BirthdayReminderWeb.MoneyRound))}" %>
+            <%= live_redirect "Money rounds", to: Routes.money_round_index_path(@conn, :index), class: "navbar-link #{active_class(@conn, Routes.money_round_index_path(@conn, :index))}" %>
             <%= link "Dashboard", to: Routes.live_dashboard_path(@conn, :home), class: "navbar-link regular" %></li>
           </div>
         </div>
