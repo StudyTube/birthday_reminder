@@ -1,7 +1,7 @@
 defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
   import Ecto.Query, warn: false
 
-  alias BirthdayReminder.{Cache, MoneyRounds, Users, User}
+  alias BirthdayReminder.{MoneyRounds, Users, User}
 
   @payment_limit 5000
 

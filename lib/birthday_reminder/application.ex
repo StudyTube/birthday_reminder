@@ -8,7 +8,6 @@ defmodule BirthdayReminder.Application do
   def start(_type, _args) do
     children = [
       {Phoenix.PubSub, name: BirthdayReminder.PubSub},
-      BirthdayReminder.Cache,
       BirthdayReminder.Repo,
       BirthdayReminder.Scheduler,
       BirthdayReminderWeb.Endpoint,
