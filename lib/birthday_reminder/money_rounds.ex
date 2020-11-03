@@ -22,7 +22,7 @@ defmodule BirthdayReminder.MoneyRounds do
   def create_money_round(attrs \\ %{}) do
     %MoneyRound{}
     |> MoneyRound.changeset(attrs)
-    |> Repo.insert
+    |> Repo.insert!
   end
 
   def update_money_round(%MoneyRound{} = money_round, attrs) do

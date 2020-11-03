@@ -21,4 +21,10 @@ defmodule BirthdayReminder.User do
     |> cast(attrs, [:first_name, :last_name, :chat_id, :username, :birthday, :subscribed, :wish_note])
     |> validate_required([:first_name, :last_name, :birthday, :subscribed])
   end
+
+  def user_names(users) do
+    users
+    |> Enum.map(fn user -> "#{user.first_name} #{user.last_name}" end)
+    |> Enum.join(", ")
+  end
 end
