@@ -5,7 +5,7 @@ defmodule BirthdayReminder.MoneyRounds do
 
   def current_rounds do
     query = from mr in MoneyRound,
-      where: fragment("current_date < ?", mr.expired_date),
+      where: fragment("current_date <= ?", mr.expired_date),
       order_by: [desc: mr.inserted_at]
 
     Repo.all(query)
