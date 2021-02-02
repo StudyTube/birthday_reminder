@@ -57,7 +57,7 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
 
     Send #{payment_size} uah to the card
 
-    5351 2901 0222 8682
+    5351 2901 5939 9725
 
     -------------------------------
 
