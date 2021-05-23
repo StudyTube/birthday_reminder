@@ -19,6 +19,6 @@ defmodule BirthdayReminder.MoneyRounds.Services.CreateMoneyRound do
   def call(params) do
     %MoneyRound{}
     |> MoneyRound.changeset(params)
-    |> Repo.insert
+    |> Repo.insert()
   end
 end

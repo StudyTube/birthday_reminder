@@ -6,7 +6,7 @@ defmodule BirthdayReminder.MoneyRounds.Schemas.MoneyRoundTest do
   setup do
     base_params = %{
       name: "John's birthday",
-      expired_date: Timex.shift(Timex.today, days: 7),
+      expired_date: Timex.shift(Timex.today(), days: 7),
       identifier: "identifier123"
     }
 

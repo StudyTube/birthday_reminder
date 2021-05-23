@@ -16,13 +16,13 @@ defmodule BirthdayReminderWeb.MoneyRoundLive.Index do
   end
 
   def handle_info({:money_round_updated, money_round}, socket) do
-    case Timex.compare(money_round.expired_date, Timex.today) do
+    case Timex.compare(money_round.expired_date, Timex.today()) do
       diff when diff in [1, 0] -> {:noreply, assign(socket, current_rounds: MoneyRounds.current_rounds())}
       _ -> {:noreply, assign(socket, past_rounds: MoneyRounds.past_rounds())}
     end
   end
 
-  defp subscribe() do
+  defp subscribe do
     Phoenix.PubSub.subscribe(BirthdayReminder.PubSub, "money-rounds")
   end
 end

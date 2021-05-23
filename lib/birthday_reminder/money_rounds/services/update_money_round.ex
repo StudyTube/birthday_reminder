@@ -18,7 +18,7 @@ defmodule BirthdayReminder.MoneyRounds.Services.UpdateMoneyRound do
   @spec call(MoneyRound.t(), map()) :: {:ok, MoneyRound.t()} | {:error, %Ecto.Changeset{}}
   def call(money_round, params) do
     with {:ok, money_round} <- update_money_round(money_round, params),
-          :ok <- broadcast(money_round) do
+         :ok <- broadcast(money_round) do
       {:ok, money_round}
     end
   end

@@ -8,7 +8,7 @@ defmodule BirthdayReminder.MoneyRounds.Services.ConfirmPaymentTest do
     test "returns updated money round" do
       _money_round = insert(:money_round, identifier: "identifier")
 
-      assert {:ok, %MoneyRound{usernames: ["johndoe"|_]}} = ConfirmPayment.call("identifier", "johndoe")
+      assert {:ok, %MoneyRound{usernames: ["johndoe" | _]}} = ConfirmPayment.call("identifier", "johndoe")
     end
   end
 

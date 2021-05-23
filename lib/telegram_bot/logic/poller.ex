@@ -30,7 +30,7 @@ defmodule TelegramBot.Poller do
   def handle_cast(:update, offset) do
     {:ok, new_offset} =
       %{offset: offset}
-      |> Nadia.get_updates
+      |> Nadia.get_updates()
       |> process_messages
 
     {:noreply, new_offset + 1, 100}
@@ -55,6 +55,7 @@ defmodule TelegramBot.Poller do
   defp process_messages({:error, _error}), do: {:ok, 0}
 
   defp process_messages([], acc), do: {:ok, acc}
+
   defp process_messages([%{update_id: offset} = message | tail], acc) do
     process_message(message)
     process_messages(tail, Enum.max([acc, offset]))

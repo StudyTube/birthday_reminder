@@ -4,16 +4,19 @@ defmodule TelegramBot.Commands do
 
   def match_message(%{message: %{text: "/start"}} = message) do
     with user <- current_user(message) do
-      Nadia.send_message(user.chat_id, "*Hi there!*\n\nI am the Birthday Reminder Bot.\n\nIf you want to subscribe to further notifications choose the right option.",
-          parse_mode: "Markdown",
-          reply_markup: %Nadia.Model.ReplyKeyboardMarkup{
-            keyboard: [
-              [%{text: "Subscribe"}],
-              [%{text: "Unsubscribe"}]
-            ],
-            resize_keyboard: true,
-            one_time_keyboard: true
-          })
+      Nadia.send_message(
+        user.chat_id,
+        "*Hi there!*\n\nI am the Birthday Reminder Bot.\n\nIf you want to subscribe to further notifications choose the right option.",
+        parse_mode: "Markdown",
+        reply_markup: %Nadia.Model.ReplyKeyboardMarkup{
+          keyboard: [
+            [%{text: "Subscribe"}],
+            [%{text: "Unsubscribe"}]
+          ],
+          resize_keyboard: true,
+          one_time_keyboard: true
+        }
+      )
     end
   end
 
@@ -44,7 +47,9 @@ defmodule TelegramBot.Commands do
     end
   end
 
-  defp current_user(%{callback_query: %{message: %{chat: %{id: chat_id, username: username}}}}), do: current_user(chat_id, username)
+  defp current_user(%{callback_query: %{message: %{chat: %{id: chat_id, username: username}}}}),
+    do: current_user(chat_id, username)
+
   defp current_user(%{message: %{chat: %{id: chat_id, username: username}}}), do: current_user(chat_id, username)
 
   defp current_user(chat_id, username) do
@@ -52,11 +57,9 @@ defmodule TelegramBot.Commands do
       %User{chat_id: nil} = user ->
         Users.update_user(user, %{chat_id: chat_id})
         user
-      %User{} = user -> user
-    end
-  end
 
-  defp send_message(%User{chat_id: chat_id}, message) do
-    Nadia.send_message(chat_id, "I don't understand you")
+      %User{} = user ->
+        user
+    end
   end
 end

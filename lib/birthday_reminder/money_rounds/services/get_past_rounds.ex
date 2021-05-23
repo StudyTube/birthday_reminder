@@ -14,11 +14,11 @@ defmodule BirthdayReminder.MoneyRounds.Services.GetPastRounds do
     iex> GetPastRounds.call()
     [%User{}, ...]
   """
-  @spec call() :: list(MoneyRound.t())
-  def call() do
+  @spec call :: list(MoneyRound.t())
+  def call do
     MoneyRound
     |> where([mr], fragment("current_date > ?", mr.expired_date))
     |> order_by([mr], desc: mr.inserted_at)
-    |> Repo.all
+    |> Repo.all()
   end
 end

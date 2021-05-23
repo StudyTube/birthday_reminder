@@ -1,8 +1,8 @@
 defmodule BirthdayReminder.Users.Services.UpdateUser do
   @moduledoc false
 
-  alias BirthdayReminder.Users.Schemas.User
   alias BirthdayReminder.Repo
+  alias BirthdayReminder.Users.Schemas.User
 
   @doc """
   Returns updated user by passed params.

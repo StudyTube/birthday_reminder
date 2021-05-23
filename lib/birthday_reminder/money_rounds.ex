@@ -3,11 +3,12 @@ defmodule BirthdayReminder.MoneyRounds do
   MoneyRounds context module.
   """
   alias BirthdayReminder.MoneyRounds.Schemas.MoneyRound
+
   alias BirthdayReminder.MoneyRounds.Services.{
+    ConfirmPayment,
+    CreateMoneyRound,
     GetCurrentRounds,
     GetPastRounds,
-    CreateMoneyRound,
-    ConfirmPayment,
     UpdateMoneyRound
   }
 

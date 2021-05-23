@@ -4,6 +4,7 @@ defmodule BirthdayReminder.Users do
   """
 
   alias BirthdayReminder.Users.Schemas.User
+
   alias BirthdayReminder.Users.Services.{
     GetUpcomingBirthdays,
     GetUserList,

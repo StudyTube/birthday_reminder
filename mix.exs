@@ -11,7 +11,7 @@ defmodule BirthdayReminder.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      preferred_cli_env: [check: :test]
+      preferred_cli_env: [ci: :test]
     ]
   end
 
@@ -87,7 +87,8 @@ defmodule BirthdayReminder.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "phx.start": ["ecto.create --quiet", "ecto.migrate", "phx.server"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      ci: ["format --check-formatted", "credo --strict", "test"]
     ]
   end
 end

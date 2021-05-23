@@ -4,8 +4,7 @@
 # remember to add this file to your .gitignore.
 import Config
 
-config :birthday_reminder, BirthdayReminder.Repo,
-  url: System.get_env("DATABASE_URL")
+config :birthday_reminder, BirthdayReminder.Repo, url: System.get_env("DATABASE_URL")
 
 config :birthday_reminder, BirthdayReminderWeb.Endpoint,
   http: [:inet6, port: 4000],

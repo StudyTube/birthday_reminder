@@ -6,7 +6,8 @@ defmodule BirthdayReminder.MoneyRounds.Services.CreateMoneyRoundTest do
 
   describe "with valid params" do
     test "returns created money round" do
-      assert {:ok, %MoneyRound{}} = CreateMoneyRound.call(%{name: "John's birthday", expired_date: ~D[2021-02-20], identifier: "identifier"})
+      assert {:ok, %MoneyRound{}} =
+               CreateMoneyRound.call(%{name: "John's birthday", expired_date: ~D[2021-02-20], identifier: "identifier"})
     end
   end
 
