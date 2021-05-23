@@ -34,7 +34,7 @@ config :nadia,
 # Configures Quantum
 config :birthday_reminder, BirthdayReminder.Scheduler,
   jobs: [
-    {"0 9 * * *", {BirthdayReminder.Scheduler.NotifyStakeholders, :run, []}}
+    {"0 9 * * *", {BirthdayReminder.Scheduler.NotifyStakeholders, :call, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom
