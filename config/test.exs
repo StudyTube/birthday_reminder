@@ -2,10 +2,7 @@ use Mix.Config
 
 # Configure your database
 config :birthday_reminder, BirthdayReminder.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "birthday_reminder_test",
-  hostname: "localhost",
+  url: System.get_env("TEST_DATABASE_URL"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

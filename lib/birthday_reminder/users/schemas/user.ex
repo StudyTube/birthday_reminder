@@ -1,7 +1,17 @@
-defmodule BirthdayReminder.User do
+defmodule BirthdayReminder.Users.Schemas.User do
   use Ecto.Schema
 
   import Ecto.Changeset
+
+  @fields [
+    :first_name,
+    :last_name,
+    :chat_id,
+    :username,
+    :birthday,
+    :subscribed,
+    :wish_note
+  ]
 
   schema "users" do
     field :first_name, :string
@@ -18,13 +28,7 @@ defmodule BirthdayReminder.User do
 
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:first_name, :last_name, :chat_id, :username, :birthday, :subscribed, :wish_note])
-    |> validate_required([:first_name, :last_name, :birthday, :subscribed])
-  end
-
-  def user_names(users) do
-    users
-    |> Enum.map(fn user -> "#{user.first_name} #{user.last_name}" end)
-    |> Enum.join(", ")
+    |> cast(attrs, @fields)
+    |> validate_required([:first_name, :last_name, :birthday])
   end
 end
