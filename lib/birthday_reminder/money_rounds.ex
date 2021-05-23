@@ -1,52 +1,68 @@
 defmodule BirthdayReminder.MoneyRounds do
-  import Ecto.Query, warn: false
+  @moduledoc """
+  MoneyRounds context module.
+  """
+  alias BirthdayReminder.MoneyRounds.Schemas.MoneyRound
+  alias BirthdayReminder.MoneyRounds.Services.{
+    GetCurrentRounds,
+    GetPastRounds,
+    CreateMoneyRound,
+    ConfirmPayment,
+    UpdateMoneyRound
+  }
 
-  alias BirthdayReminder.{MoneyRound, Repo, User}
+  @doc """
+  Gets list of current money rounds.
 
-  def current_rounds do
-    query = from mr in MoneyRound,
-      where: fragment("current_date <= ?", mr.expired_date),
-      order_by: [desc: mr.inserted_at]
+  ## Examples
 
-    Repo.all(query)
-  end
+    iex> current_rounds()
+    [%MoneyRound{}, ...]
+  """
+  @spec current_rounds() :: list(MoneyRound.t())
+  defdelegate current_rounds(), to: GetCurrentRounds, as: :call
 
-  def past_rounds do
-    query = from mr in MoneyRound,
-      where: fragment("current_date > ?", mr.expired_date),
-      order_by: [desc: mr.expired_date]
+  @doc """
+  Gets list of past money rounds.
 
-    Repo.all(query)
-  end
+  ## Examples
 
-  def create_money_round(attrs \\ %{}) do
-    %MoneyRound{}
-    |> MoneyRound.changeset(attrs)
-    |> Repo.insert!
-  end
+    iex> past_rounds()
+    [%MoneyRound{}, ...]
+  """
+  @spec past_rounds() :: list(MoneyRound.t())
+  defdelegate past_rounds(), to: GetPastRounds, as: :call
 
-  def update_money_round(%MoneyRound{} = money_round, attrs) do
-    money_round
-    |> MoneyRound.changeset(attrs)
-    |> Repo.update()
-    |> broadcast(:money_round_updated)
-  end
+  @doc """
+  Creates money round.
 
-  def confirm_payment(chat_id, identifier) do
-    user = Repo.get_by(User, chat_id: chat_id)
-    money_round = Repo.get_by(MoneyRound, identifier: identifier)
-    update_money_round(money_round, %{usernames: [user.username|money_round.usernames]})
+  ## Examples
 
-    chat_id
-  end
+    iex> create_money_round({name: "John's birthday", expired_date: ~D[2021-05-26], identifier: "random_string"})
+    {:ok, %MoneyRound{}}
+  """
+  @spec create_money_round(map()) :: {:ok, MoneyRound.t()} | {:error, %Ecto.Changeset{}}
+  defdelegate create_money_round(params), to: CreateMoneyRound, as: :call
 
-  def subscribe do
-    Phoenix.PubSub.subscribe(BirthdayReminder.PubSub, "money-rounds")
-  end
+  @doc """
+  Updates money round.
 
-  defp broadcast({:error, _reason} = error, _event), do: error
-  defp broadcast({:ok, money_round}, event) do
-    Phoenix.PubSub.broadcast(BirthdayReminder.PubSub, "money-rounds", {event, money_round})
-    {:ok, money_round}
-  end
+  ## Examples
+
+    iex> update_money_round(money_round, {expired_date: ~D[2021-05-26]})
+    {:ok, %MoneyRound{}}
+  """
+  @spec update_money_round(MoneyRound.t(), map()) :: {:ok, MoneyRound.t()} | {:error, %Ecto.Changeset{}}
+  defdelegate update_money_round(money_round, params), to: UpdateMoneyRound, as: :call
+
+  @doc """
+  Confirms money round payment.
+
+  ## Examples
+
+    iex> confirm_payment(identifier, user)
+    {:ok, %MoneyRound{}}
+  """
+  @spec confirm_payment(binary(), binary()) :: {:ok, MoneyRound.t()} | {:error, :money_round_not_found}
+  defdelegate confirm_payment(identifier, username), to: ConfirmPayment, as: :call
 end

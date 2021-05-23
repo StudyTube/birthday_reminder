@@ -6,5 +6,6 @@ defmodule BirthdayReminder.Factory do
 
   use ExMachina.Ecto, repo: BirthdayReminder.Repo
 
+  use BirthdayReminder.MoneyRoundFactory
   use BirthdayReminder.UserFactory
 end

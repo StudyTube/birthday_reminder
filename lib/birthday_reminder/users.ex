@@ -1,9 +1,14 @@
 defmodule BirthdayReminder.Users do
-  import Ecto.Query, warn: false
+  @moduledoc """
+  Users context module.
+  """
 
-  alias BirthdayReminder.Repo
   alias BirthdayReminder.Users.Schemas.User
-  alias BirthdayReminder.Users.Services.{GetUserList, GetUpcomingBirthdays, UpdateUser}
+  alias BirthdayReminder.Users.Services.{
+    GetUpcomingBirthdays,
+    GetUserList,
+    UpdateUser
+  }
 
   @doc """
   Gets list of users with upcoming birthdays.
