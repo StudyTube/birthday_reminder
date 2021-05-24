@@ -13,7 +13,7 @@ services:
       - 4000:4000
     stdin_open: true
     tty: true
-    command: iex -S mix phx.start
+    command: mix phx.start
     volumes:
       - .:/birthday_reminder:cached
       - static:/birthday_reminder/priv/static

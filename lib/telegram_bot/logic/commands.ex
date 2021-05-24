@@ -1,10 +1,12 @@
 defmodule TelegramBot.Commands do
-  alias BirthdayReminder.{MoneyRounds, Repo, User, Users}
+  alias BirthdayReminder.{MoneyRounds, Repo, Users}
+  alias BirthdayReminder.Users.Schemas.User
 
   def match_message(%{message: %{text: "/start"}} = message) do
-    message
-    |> current_chat
-    |> Nadia.send_message("*Hi there!*\n\nI am the Birthday Reminder Bot.\n\nIf you want to subscribe to further notifications choose the right option.",
+    with user <- current_user(message) do
+      Nadia.send_message(
+        user.chat_id,
+        "*Hi there!*\n\nI am the Birthday Reminder Bot.\n\nIf you want to subscribe to further notifications choose the right option.",
         parse_mode: "Markdown",
         reply_markup: %Nadia.Model.ReplyKeyboardMarkup{
           keyboard: [
@@ -13,45 +15,51 @@ defmodule TelegramBot.Commands do
           ],
           resize_keyboard: true,
           one_time_keyboard: true
-        })
+        }
+      )
+    end
   end
 
   def match_message(%{message: %{text: "Subscribe"}} = message) do
-    message
-    |> current_chat
-    |> Users.subscribe
-    |> Nadia.send_message("You successfully subscribed 🥳")
+    with user <- current_user(message),
+         {:ok, user} <- Users.update_user(user, %{subscribed: true}) do
+      Nadia.send_message(user.chat_id, "You successfully subscribed 🥳")
+    end
   end
 
   def match_message(%{message: %{text: "Unsubscribe"}} = message) do
-    message
-    |> current_chat
-    |> Users.unsubscribe
-    |> Nadia.send_message("You unsubscribed 😕")
+    with user <- current_user(message),
+         {:ok, user} <- Users.update_user(user, %{subscribed: false}) do
+      Nadia.send_message(user.chat_id, "You unsubscribed 😕")
+    end
   end
 
   def match_message(%{message: %{text: "code " <> identifier}} = message) do
-    message
-    |> current_chat
-    |> MoneyRounds.confirm_payment(identifier)
-    |> Nadia.send_message("Payment confirmed")
+    with user <- current_user(message),
+         {:ok, _money_round} <- MoneyRounds.confirm_payment(identifier, user.username) do
+      Nadia.send_message(user.chat_id, "Payment confirmed")
+    end
   end
 
   def match_message(%{message: %{text: _any_text}} = message) do
-    message
-    |> current_chat
-    |> Nadia.send_message("I don't understand you")
+    with user <- current_user(message) do
+      Nadia.send_message(user.chat_id, "I don't understand you")
+    end
   end
 
-  defp current_chat(%{callback_query: %{message: %{chat: %{id: chat_id, username: username}}}}), do: _current_chat(chat_id, username)
-  defp current_chat(%{message: %{chat: %{id: chat_id, username: username}}}), do: _current_chat(chat_id, username)
+  defp current_user(%{callback_query: %{message: %{chat: %{id: chat_id, username: username}}}}),
+    do: current_user(chat_id, username)
 
-  defp _current_chat(chat_id, username) do
-    with user <- Repo.get_by(User, username: username),
-         nil <- user.chat_id do
-      Users.update_user(user, %{chat_id: chat_id}); chat_id
-    else
-      _ -> chat_id
+  defp current_user(%{message: %{chat: %{id: chat_id, username: username}}}), do: current_user(chat_id, username)
+
+  defp current_user(chat_id, username) do
+    case Repo.get_by(User, username: username) do
+      %User{chat_id: nil} = user ->
+        Users.update_user(user, %{chat_id: chat_id})
+        user
+
+      %User{} = user ->
+        user
     end
   end
 end

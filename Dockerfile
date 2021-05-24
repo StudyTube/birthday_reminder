@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir:1.9.0
+FROM bitwalker/alpine-elixir:1.11.0
 
 RUN apk update \
     && apk upgrade --no-cache \
@@ -12,8 +12,14 @@ RUN apk update \
 
 WORKDIR /birthday_reminder
 
-COPY . /birthday_reminder
+COPY mix.exs .
+COPY mix.lock .
 
-RUN mix do deps.get, deps.compile, compile
+RUN mix do deps.get, deps.compile
+
+RUN mkdir assets
+
+COPY assets/package.json assets
+COPY assets/package-lock.json assets
 
 RUN cd assets && npm install && cd ..

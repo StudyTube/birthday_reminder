@@ -1,4 +1,4 @@
-defmodule BirthdayReminder.MoneyRound do
+defmodule BirthdayReminder.MoneyRounds.Schemas.MoneyRound do
   use Ecto.Schema
 
   import Ecto.Changeset

@@ -1,10 +1,13 @@
 defmodule TelegramBot.Matcher do
-  use GenServer
-  alias TelegramBot.Commands
+  @moduledoc """
+  This module matches incoming messages.
+  """
+
+  use GenServer, restart: :transient
 
   # Server
 
-  def start_link do
+  def start_link(_args) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
@@ -13,7 +16,7 @@ defmodule TelegramBot.Matcher do
   end
 
   def handle_cast(message, state) do
-    Commands.match_message(message)
+    TelegramBot.Commands.match_message(message)
 
     {:noreply, state}
   end

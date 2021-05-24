@@ -1,56 +1,46 @@
 defmodule BirthdayReminder.Users do
-  import Ecto.Query, warn: false
+  @moduledoc """
+  Users context module.
+  """
 
-  alias BirthdayReminder.{Repo, User}
+  alias BirthdayReminder.Users.Schemas.User
 
-  def list_users do
-    query = from u in User,
-      order_by: [asc: fragment("extract(month from birthday)"), asc: fragment("extract(day from birthday)")]
+  alias BirthdayReminder.Users.Services.{
+    GetUpcomingBirthdays,
+    GetUserList,
+    UpdateUser
+  }
 
-    Repo.all(query)
-  end
+  @doc """
+  Gets list of users with upcoming birthdays.
 
-  def subscribed_users(except_users) do
-    except_ids = Enum.map(except_users, &(&1).id)
+  ## Examples
 
-    query = from u in User,
-      where: u.subscribed == true and not(u.id in ^except_ids)
+    iex> upcoming_birthdays()
+    [%User{}, ...]
+  """
+  @spec upcoming_birthdays() :: list(User.t())
+  defdelegate upcoming_birthdays(), to: GetUpcomingBirthdays, as: :call
 
-    Repo.all(query)
-  end
+  @doc """
+  Gets list of users ordered by birthday.
 
-  def closest_birthdays do
-    query = from u in User,
-      where: fragment("extract(month from age(current_date + interval '7 days', ?)) = 0 and
-                       extract(day from age(current_date + interval '7 days', ?)) = 0",
-                       u.birthday,
-                       u.birthday) and
-             u.subscribed == true
+  ## Examples
 
-    Repo.all(query)
-  end
+    iex> list_users()
+    [%User{}, ...]
+  """
+  @spec list_users() :: list(User.t())
+  defdelegate list_users(), to: GetUserList, as: :call
 
-  def get_user!(id), do: Repo.get!(User, id)
+  @doc """
+  Updates user.
 
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
-  end
+  ## Examples
 
-  def subscribe(chat_id) do
-    User
-    |> Repo.get_by(chat_id: chat_id)
-    |> update_user(%{subscribed: true})
-
-    chat_id
-  end
-
-  def unsubscribe(chat_id) do
-    User
-    |> Repo.get_by(chat_id: chat_id)
-    |> update_user(%{subscribed: false})
-
-    chat_id
-  end
+    iex> update_user(user, %{first_name: "John", last_name: "Doe"})
+    {:ok, %User{}}
+  """
+  @spec update_user(User.t(), map()) :: {:ok, User.t()} | {:error, %Ecto.Changeset{}}
+  defdelegate update_user(user, params), to: UpdateUser, as: :call
 end

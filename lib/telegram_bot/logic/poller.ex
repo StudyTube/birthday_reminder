@@ -9,11 +9,11 @@ defmodule TelegramBot.Poller do
            updates queue. All previous updates will forgotten.
   """
 
-  use GenServer
+  use GenServer, restart: :transient
 
   # Server
 
-  def start_link do
+  def start_link(_args) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
@@ -30,7 +30,7 @@ defmodule TelegramBot.Poller do
   def handle_cast(:update, offset) do
     {:ok, new_offset} =
       %{offset: offset}
-      |> Nadia.get_updates
+      |> Nadia.get_updates()
       |> process_messages
 
     {:noreply, new_offset + 1, 100}
@@ -51,13 +51,14 @@ defmodule TelegramBot.Poller do
   # Helpers
 
   defp process_messages({:ok, []}), do: {:ok, 0}
-  defp process_messages({:ok, results}), do: _process_messages(results, 0)
+  defp process_messages({:ok, results}), do: process_messages(results, 0)
   defp process_messages({:error, _error}), do: {:ok, 0}
 
-  defp _process_messages([], acc), do: {:ok, acc}
-  defp _process_messages([%{update_id: offset} = message | tail], acc) do
+  defp process_messages([], acc), do: {:ok, acc}
+
+  defp process_messages([%{update_id: offset} = message | tail], acc) do
     process_message(message)
-    _process_messages(tail, Enum.max([acc, offset]))
+    process_messages(tail, Enum.max([acc, offset]))
   end
 
   defp process_message(nil), do: nil

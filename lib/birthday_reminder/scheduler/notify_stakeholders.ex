@@ -1,51 +1,67 @@
 defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
-  import Ecto.Query, warn: false
+  @moduledoc """
+  The notification module to inform users about upcoming birthday.
+  """
+  import Ecto.Query, only: [where: 3]
 
-  alias BirthdayReminder.{MoneyRounds, Users, User}
+  alias BirthdayReminder.{MoneyRounds, Users}
+  alias BirthdayReminder.Repo
+  alias BirthdayReminder.Users.Schemas.User
 
   @payment_limit 5000
 
-  def run do
-    run(Users.closest_birthdays())
-  end
-
-  def run([%User{}|_] = birthday_people) do
-    birthday_people
-    |> create_money_round
-    |> stakeholders
-    |> send_notifications
-  end
-
-  def run(_) do
-    :ok
+  def call do
+    with [%User{} | _] = birthday_people <- Users.upcoming_birthdays(),
+         {:ok, birthday_people_names} <- get_birthday_people_names(birthday_people),
+         {:ok, money_round} <- create_money_round(birthday_people_names),
+         subscribers <- get_subscribers(birthday_people),
+         {:ok, payment_size} <- calculate_payment_size(subscribers, birthday_people) do
+      send_notifications(subscribers, birthday_people_names, money_round.identifier, payment_size)
+    else
+      _ -> :ok
+    end
   end
 
   defp birthday do
-    Timex.today
+    Timex.today()
     |> Timex.shift(days: 7)
     |> Timex.format!("%d %B", :strftime)
   end
 
-  defp create_money_round(birthday_people) do
-    money_round = MoneyRounds.create_money_round(%{
-      name: "#{User.user_names(birthday_people)}'s birthday",
-      expired_date: Timex.shift(Timex.today, days: 7),
-      identifier: :crypto.strong_rand_bytes(32) |> Base.encode64 |> binary_part(0, 32)
+  def get_birthday_people_names(users) do
+    names =
+      users
+      |> Enum.map(fn user -> "#{user.first_name} #{user.last_name}" end)
+      |> Enum.join(", ")
+
+    {:ok, names}
+  end
+
+  defp get_subscribers(except_users) do
+    except_ids = Enum.map(except_users, & &1.id)
+
+    User
+    |> where([u], u.subscribed == true and not (u.id in ^except_ids))
+    |> Repo.all()
+  end
+
+  defp calculate_payment_size(subscribers, birthday_people) do
+    {:ok, round(@payment_limit / Enum.count(subscribers) * Enum.count(birthday_people))}
+  end
+
+  defp create_money_round(birthday_people_names) do
+    MoneyRounds.create_money_round(%{
+      name: "#{birthday_people_names}'s birthday",
+      expired_date: Timex.shift(Timex.today(), days: 7),
+      identifier: :crypto.strong_rand_bytes(32) |> Base.encode64() |> binary_part(0, 32)
     })
-
-    {money_round, birthday_people}
   end
 
-  defp stakeholders({money_round, birthday_people}) do
-    subscribers = Users.subscribed_users(birthday_people)
-    {money_round, birthday_people, subscribers}
-  end
-
-  defp send_notifications({money_round, birthday_people, subscribers}) do
-    payment_size = round(@payment_limit / Enum.count(subscribers) * Enum.count(birthday_people))
-
-    Enum.each(subscribers, fn user ->
-      Nadia.send_message(user.chat_id, text_message(user, User.user_names(birthday_people), money_round.identifier, payment_size), parse_mode: "Markdown")
+  defp send_notifications(subscribers, birthday_people_names, identifier, payment_size) do
+    Enum.each(subscribers, fn subscriber ->
+      Nadia.send_message(subscriber.chat_id, text_message(subscriber, birthday_people_names, identifier, payment_size),
+        parse_mode: "Markdown"
+      )
     end)
   end
 
@@ -61,7 +77,7 @@ defmodule BirthdayReminder.Scheduler.NotifyStakeholders do
 
     -------------------------------
 
-    Please write "code #{identifier}" to the chat to confirm your payment
+    Please write "code #{identifier}" to the chat to confirm your payment.
     """
   end
 end

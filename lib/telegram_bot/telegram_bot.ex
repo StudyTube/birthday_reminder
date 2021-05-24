@@ -7,10 +7,10 @@ defmodule TelegramBot do
 
   def init(:ok) do
     children = [
-      worker(TelegramBot.Poller, [], restart: :transient),
-      worker(TelegramBot.Matcher, [], restart: :transient)
+      TelegramBot.Poller,
+      TelegramBot.Matcher
     ]
 
-    supervise(children, strategy: :one_for_one)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
